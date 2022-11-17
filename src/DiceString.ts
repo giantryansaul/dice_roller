@@ -1,20 +1,17 @@
-import { Random } from "random-js";
 import { DiceGroup }  from "./DiceGroup";
 
 // eslint-disable-next-line no-useless-escape
-const DICE_SPLIT_REGEX = /((?:\d+d|d)\d+|[-\+()]|\d+)/;
+const DICE_SPLIT_REGEX = /((?:\d+d|d)\d+|[\*\/\-\+()]|[+-]?(?:[0-9]*[.])?[0-9]+)/;
 const DICE_GROUP_REGEX = /((?:\d+d|d)\d+)/;
 
 export class DiceString {
     input: string;
-    randomGenerator: Random;
     splitInput: string[] = [];
     diceRollObjs: Array<string|DiceGroup> = [];
     evalString: string[] = [];
 
-    constructor(input: string, randomGenerator = new Random()) {
+    constructor(input: string) {
         this.input = input;
-        this.randomGenerator = randomGenerator;
     }
 
     eval() {
@@ -43,14 +40,14 @@ export class DiceString {
         return this.splitInput;
     }
 
-    evalSplitInput(): Array<string|DiceGroup> {
+    evalSplitInput(): number {
         if (this.splitInput.length === 0) {
             throw Error('Cannot evaluate empty input');
         }
 
         this.diceRollObjs = this.splitInput.flatMap(x => {
             if (RegExp(DICE_GROUP_REGEX).test(x)) {
-                const diceGroup = new DiceGroup(x, this.randomGenerator);
+                const diceGroup = new DiceGroup(x);
                 diceGroup.evalDiceInput();
                 return diceGroup;
             } else {
@@ -58,7 +55,15 @@ export class DiceString {
             }
         });
 
-        return this.diceRollObjs;
+        const evalString = this.diceRollObjs.map(x => {
+                if (x instanceof DiceGroup) {
+                    return x.returnRealValue();
+                } else {
+                    return x;
+                }
+            }).join('');
+
+        return eval(evalString);
     }
 }
 

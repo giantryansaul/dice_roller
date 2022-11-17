@@ -62,3 +62,16 @@ Output: Result number and dice rolls object
 
 * Ported over the basic regex tests to Jest. It all is hooked up. Need to figure out how Mocks work in Jest.
 * Just dabbled in getting jest mocks to work.
+
+## 11-14-2022
+
+* Resuming mocking from before, I had spent some hours trying to figure it out for Typescript class structures and haven't gotten too far. Very confusing documentation for this.
+
+* This documented answer doesn't seem to solve what I'm doing:
+https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-not-exist-on-type
+
+* I re-read through the Jest documentation and tried the SpyOn with "mockImplementation" function and got the results I wanted. [Documentation](https://jestjs.io/docs/es6-class-mocks#mocking-a-specific-method-of-a-class). I can finally start moving forward, this is much easier.
+
+* Each class has a good base of unit tests, can start expanding the other things we want to add to DiceString.
+
+* Expanded supported math operations and added tests for all. Very well tested now!

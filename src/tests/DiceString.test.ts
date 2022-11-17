@@ -1,31 +1,16 @@
-import {describe, expect, test, jest} from '@jest/globals';
+import {describe, expect, test, jest, beforeEach} from '@jest/globals';
 import { DiceString } from '../DiceString';
 import { DiceGroup } from '../DiceGroup';
 
-jest.mock('../DiceGroup', () => {
-    return {
-        DiceGroup: jest.fn().mockImplementation(() => {
-            return {
-                evalDiceInput: jest.fn().mockImplementation(() => { return 6; })
-            };
-        })
-    };
-});
-const mockDiceGroup = jest.mocked(DiceGroup);
-
-// let mockedDiceGroup: jest.Mocked<DiceGroup.DiceGroupType> = {
-//     evalDiceInput: jest.fn()
-// };
-// mockedDiceGroup.default.mockReturnValue(6);
-
-// const { default: DiceGroup } = (DiceGroup as unknown) as typeof 
-
-// const mockDiceGroup = jest.mocked(DiceGroup);
-// mockDiceGroup.evalDiceInput().mockReturnValue(6);
-// (DiceGroup as unknown as jest.Mock).mockReturnValue(6);
+const mockDiceGroup = jest.spyOn(DiceGroup.prototype, 'evalDiceInput').mockImplementation(() => 6);
+const mockReturnValue = jest.spyOn(DiceGroup.prototype, 'returnRealValue').mockImplementation(() => 6);
 
 describe('DiceString', () => {
     describe('splitInputByRegex', () => {
+
+        //TODO: keep high, low
+        //TODO: explode
+
         test('throws error when input is blank string', () => {
             const dice = new DiceString('');
             expect(() => {
@@ -46,11 +31,29 @@ describe('DiceString', () => {
             expect(ret).toEqual(["1", "+", "10"]);
         });
 
-        //TODO: test for floating point numbers
+        test('handles floating point', () => {
+            const dice = new DiceString(' 1 + 0.5 ');
+            const ret = dice.splitInputByRegex();
+            expect(ret).toEqual(["1", "+", "0.5"]);
+        });
 
-        //TODO: multiplication and division
+        test('handles division', () => {
+            const dice = new DiceString(' 4 / 2 ');
+            const ret = dice.splitInputByRegex();
+            expect(ret).toEqual(["4", "/", "2"]);
+        });
 
-        //TODO: keep high, low, explode
+        test('handles multiplication', () => {
+            const dice = new DiceString(' 2 * 2 ');
+            const ret = dice.splitInputByRegex();
+            expect(ret).toEqual(["2", "*", "2"]);
+        });
+
+        test('handles parenthesis', () => {
+            const dice = new DiceString(' ( 2 * 2 ) ');
+            const ret = dice.splitInputByRegex();
+            expect(ret).toEqual(["(", "2", "*", "2", ")"]);
+        });
 
         test('splits random input with numbers to output with numbers', () => {
             const dice = new DiceString("Random String 12345");
@@ -111,14 +114,56 @@ describe('DiceString', () => {
             const dice = new DiceString('2d6');
             dice.splitInput = ['2d6'];
             const ret = dice.evalSplitInput();
-            expect(mockDiceGroup.mock.instances.length).toBe(1);
+            expect(mockDiceGroup).toHaveBeenCalledTimes(1);
+            expect(ret).toBe(6);
         });
 
         test('splits 2 rolls out to multiple groups', () => {
             const dice = new DiceString('2d6 + 3d10');
-            dice.splitInput = ['2d6 + 3d10'];
+            dice.splitInput = ['2d6', '+', '3d6'];
             const ret = dice.evalSplitInput();
-            expect(mockDiceGroup.mock.instances.length).toBe(2);
+            expect(mockDiceGroup).toHaveBeenCalledTimes(2);
+            expect(ret).toBe(12);
+        });
+
+        test('subtracts groups', () => {
+            const dice = new DiceString('2d6 + 3d10');
+            dice.splitInput = ['2d6', '-', '3d6'];
+            const ret = dice.evalSplitInput();
+            expect(mockDiceGroup).toHaveBeenCalledTimes(2);
+            expect(ret).toBe(0);
+        });
+
+        test('divides groups', () => {
+            const dice = new DiceString('2d6 / 3d10');
+            dice.splitInput = ['2d6', '/', '3d6'];
+            const ret = dice.evalSplitInput();
+            expect(mockDiceGroup).toHaveBeenCalledTimes(2);
+            expect(ret).toBe(1);
+        });
+
+        test('multiplies groups', () => {
+            const dice = new DiceString('2d6 * 3d10');
+            dice.splitInput = ['2d6', '*', '3d6'];
+            const ret = dice.evalSplitInput();
+            expect(mockDiceGroup).toHaveBeenCalledTimes(2);
+            expect(ret).toBe(36);
+        });
+
+        test('uses floating point', () => {
+            const dice = new DiceString('2d6 * 0.5');
+            dice.splitInput = ['2d6', '*', '0.5'];
+            const ret = dice.evalSplitInput();
+            expect(mockDiceGroup).toHaveBeenCalledTimes(1);
+            expect(ret).toBe(3);
+        });
+
+        test('uses parenthesis', () => {
+            const dice = new DiceString('(d6 + 2) * 3d10');
+            dice.splitInput = ['(', 'd6', '+', '2', ')', '*', '3d10'];
+            const ret = dice.evalSplitInput();
+            expect(mockDiceGroup).toHaveBeenCalledTimes(2);
+            expect(ret).toBe(48);
         });
     });
 });

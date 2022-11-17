@@ -1,15 +1,12 @@
-import { Random } from "random-js";
 import { DieRoll } from "./DieRoll";
 
 export class DiceGroup {
     input: string;
-    randomGenerator: Random;
     storedRoll: Array<DieRoll> = [];
-    returnValue = 0;
+    realValue = 0;
 
-    constructor(input: string, randomGenerator = new Random()) {
+    constructor(input: string) {
         this.input = input;
-        this.randomGenerator = randomGenerator;
     }
 
     evalDiceInput(): number {
@@ -18,13 +15,17 @@ export class DiceGroup {
         const dieSides = diceExpression[1];
         const dice: DieRoll[] = [];
         for (let i = 0; i < diceMultiple; i++) {
-            dice.push(new DieRoll(Number(dieSides), this.randomGenerator));
+            dice.push(new DieRoll(Number(dieSides)));
         }
         this.storedRoll = dice;
         const tempEval = this.storedRoll.map(die => die.roll());
 
         //TODO: More eval options, this only evaluates xdy and not advantage or keep high
-        this.returnValue = tempEval.reduce((x, y) => { return x + y; });
-        return this.returnValue;
+        this.realValue = tempEval.reduce((x, y) => { return x + y; });
+        return this.realValue;
+    }
+
+    returnRealValue(): number {
+        return this.realValue;
     }
 }

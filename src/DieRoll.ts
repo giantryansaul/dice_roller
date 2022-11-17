@@ -7,12 +7,12 @@ export class DieRoll {
     randomGenerator: Random;
     dropped: Boolean;
 
-    constructor(sides: number, randomGenerator = new Random()) {
+    constructor(sides: number) {
         if (Number.isNaN(sides)) {
             throw Error('Sides was NaN');
         }
         this.sides = sides;
-        this.randomGenerator = randomGenerator;
+        this.randomGenerator = new Random();
         this.dropped = false;
     }
 
