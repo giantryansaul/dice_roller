@@ -20,7 +20,6 @@
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
       "allowUnreachableCode": true,
-       "useUnknownInCatchVariables": false,  // TypeScript 4.4+ only!
   },
     "include": [
       "src/**/*.ts",

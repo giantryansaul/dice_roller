@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../discord-example-app"
+		},
+		{
+			"path": "../emptyts"
 		}
 	],
 	"settings": {}
