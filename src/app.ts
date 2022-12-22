@@ -1,7 +1,7 @@
 import { InteractionType, InteractionResponseType } from 'discord-interactions';
 import 'dotenv/config';
 import express from 'express';
-import { HasGuildCommands, TEST_COMMAND } from './commands';
+import { HasGuildCommands, ROLL_DICE, TEST_COMMAND } from './commands';
 import { VerifyDiscordRequest } from './utils';
 
 const app = express();
@@ -34,6 +34,18 @@ app.post('/interactions', async function (req, res) {
                 },
             });
         }
+
+        if (name === 'roll') {
+            
+            console.log(`Dice roll ${data}`);
+
+            return res.send({
+                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                data: {
+                    content: `dice roll ${data}`
+                }
+            });
+        }
     }
 
 });
@@ -44,5 +56,6 @@ app.listen(PORT, () => {
   // Check if guild commands from commands.js are installed (if not, install them)
   HasGuildCommands(process.env.APP_ID, process.env.GUILD_ID, [
     TEST_COMMAND,
+    ROLL_DICE,
   ]);
 });
