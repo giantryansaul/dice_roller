@@ -1,8 +1,8 @@
 import { DiceGroup }  from "./DiceGroup";
 
 // eslint-disable-next-line no-useless-escape
-const DICE_SPLIT_REGEX = /((?:\d+d|d)\d+|[\*\/\-\+()]|[+-]?(?:[0-9]*[.])?[0-9]+)/;
-const DICE_GROUP_REGEX = /((?:\d+d|d)\d+)/;
+const DICE_SPLIT_REGEX = /((?:\d+d|d)\d+(?:k[hl]\d+)?|[\*\/\-\+()]|[+-]?(?:[0-9]*[.])?[0-9]+)/;
+const DICE_GROUP_REGEX = /((?:\d+d|d)\d+(?:k[hl]\d+)?)/;
 
 export class DiceString {
     input: string;

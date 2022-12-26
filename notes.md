@@ -75,3 +75,14 @@ https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-
 * Each class has a good base of unit tests, can start expanding the other things we want to add to DiceString.
 
 * Expanded supported math operations and added tests for all. Very well tested now!
+
+# 12-24-2022
+
+* Began doing keep high logic and defining tests.
+* The mocks for these tests ideally would be able to return 2 different values from the mocked `roll`, so need to figure out how to get a generator to work.
+* Nevermind, no generator needed, just use `.mockReturnValueOnce(5).mockReturnValueOnce(3)` in a chain like this.
+* Tests are all ready, just build out the logic in DiceGroup.
+
+# 12-25-2022
+
+* Created logic for `KeepDice` which will do keep high and keep low. All tests passing.

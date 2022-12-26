@@ -23,11 +23,56 @@ describe('DiceGroup', () => {
         });
 
         test('multiple DieRoll instances with a multiplier, 2d6(6+6) = 12', () => {
+            const mockRoll = jest.spyOn(DieRoll.prototype, 'roll').mockReturnValueOnce(5).mockReturnValueOnce(3);
             const diceGroup = new DiceGroup('2d6');
             const ret = diceGroup.evalDiceInput();
-            expect(ret).toBe(12);
+            expect(ret).toBe(8);
             expect(mockRoll).toBeCalledTimes(2);
             expect(mockDieRoll).toBeCalledTimes(2);
+        });
+
+        test('keep one high die from 2d6kh1', () => {
+            const mockRoll = jest.spyOn(DieRoll.prototype, 'roll').mockReturnValueOnce(5).mockReturnValueOnce(3);
+            const diceGroup = new DiceGroup('2d6kh1');
+            const ret = diceGroup.evalDiceInput();
+            expect(ret).toBe(5);
+            expect(mockRoll).toBeCalledTimes(2);
+            expect(mockDieRoll).toBeCalledTimes(2);
+        });
+
+        test('keep two high die from 4d6kh2', () => {
+            const mockRoll = jest.spyOn(DieRoll.prototype, 'roll')
+                .mockReturnValueOnce(6)
+                .mockReturnValueOnce(5)
+                .mockReturnValueOnce(3)
+                .mockReturnValueOnce(1);
+            const diceGroup = new DiceGroup('4d6kh2');
+            const ret = diceGroup.evalDiceInput();
+            expect(ret).toBe(11);
+            expect(mockRoll).toBeCalledTimes(4);
+            expect(mockDieRoll).toBeCalledTimes(4);
+        });
+
+        test('keep one low die from 2d6kl1', () => {
+            const mockRoll = jest.spyOn(DieRoll.prototype, 'roll').mockReturnValueOnce(5).mockReturnValueOnce(3);
+            const diceGroup = new DiceGroup('2d6kl1');
+            const ret = diceGroup.evalDiceInput();
+            expect(ret).toBe(3);
+            expect(mockRoll).toBeCalledTimes(2);
+            expect(mockDieRoll).toBeCalledTimes(2);
+        });
+
+        test('keep two high die from 4d6kl2', () => {
+            const mockRoll = jest.spyOn(DieRoll.prototype, 'roll')
+                .mockReturnValueOnce(6)
+                .mockReturnValueOnce(5)
+                .mockReturnValueOnce(3)
+                .mockReturnValueOnce(1);
+            const diceGroup = new DiceGroup('4d6kl2');
+            const ret = diceGroup.evalDiceInput();
+            expect(ret).toBe(4);
+            expect(mockRoll).toBeCalledTimes(4);
+            expect(mockDieRoll).toBeCalledTimes(4);
         });
     });
 });

@@ -86,6 +86,30 @@ describe('DiceString', () => {
             expect(ret).toEqual(['2d6']);
         });
 
+        test('splits "2d6kh1" input to ["2d6kh1"]', () => {
+            const dice = new DiceString('2d6kh1');
+            const ret = dice.splitInputByRegex();
+            expect(ret).toEqual(['2d6kh1']);
+        });
+
+        test('splits "2d6kl1" input to ["2d6kl1"]', () => {
+            const dice = new DiceString('2d6kl1');
+            const ret = dice.splitInputByRegex();
+            expect(ret).toEqual(['2d6kl1']);
+        });
+
+        test('splits "20d6kl10" input to ["20d6kl10"]', () => {
+            const dice = new DiceString('20d6kl10');
+            const ret = dice.splitInputByRegex();
+            expect(ret).toEqual(['20d6kl10']);
+        });
+
+        test('splits "20d6kl10+2d6" input to ["20d6kl10", "+" "2d6"]', () => {
+            const dice = new DiceString('20d6kl10+2d6');
+            const ret = dice.splitInputByRegex();
+            expect(ret).toEqual(['20d6kl10', "+", "2d6"]);
+        });
+
         test('splits "100d100" input to ["100d100"]', () => {
             const dice = new DiceString('100d100');
             const ret = dice.splitInputByRegex();
@@ -164,6 +188,22 @@ describe('DiceString', () => {
             const ret = dice.evalSplitInput();
             expect(mockDiceGroup).toHaveBeenCalledTimes(2);
             expect(ret).toBe(48);
+        });
+
+        test('keep high 2d6kh1', () => {
+            const dice = new DiceString('2d6kh1');
+            dice.splitInput = ['2d6kh1'];
+            const ret = dice.evalSplitInput();
+            expect(mockDiceGroup).toHaveBeenCalledTimes(1);
+            expect(ret).toBe(6);
+        });
+
+        test('keep low 4d6kl2', () => {
+            const dice = new DiceString('4d6kl2');
+            dice.splitInput = ['4d6kl2'];
+            const ret = dice.evalSplitInput();
+            expect(mockDiceGroup).toHaveBeenCalledTimes(1);
+            expect(ret).toBe(6);
         });
     });
 });

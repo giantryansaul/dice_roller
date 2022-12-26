@@ -9,8 +9,24 @@ export class DiceGroup {
         this.input = input;
     }
 
+    private keepDice(keepDiceExpression: string, dice: number[]): number[] {
+        const keepHighDice = keepDiceExpression.split("h");
+        const keepLowDice = keepDiceExpression.split("l");
+        if (keepHighDice.length > 1) {
+            const keepHighDiceNumber = keepHighDice[1];
+            dice.sort((a, b) => b - a);
+            dice.splice(Number(keepHighDiceNumber), dice.length);
+        } else if (keepLowDice.length > 1) {
+            const keepLowDiceNumber = keepLowDice[1];
+            dice.sort((a, b) => a - b);
+            dice.splice(Number(keepLowDiceNumber), dice.length);
+        }
+        return dice;
+    }
+
     evalDiceInput(): number {
-        const diceExpression = this.input.split("d");
+        const keepDiceExpression = this.input.split("k");
+        const diceExpression = keepDiceExpression[0].split("d");
         const diceMultiple = diceExpression[0] !== '' ? diceExpression[0] : 1;
         const dieSides = diceExpression[1];
         const dice: DieRoll[] = [];
@@ -18,9 +34,12 @@ export class DiceGroup {
             dice.push(new DieRoll(Number(dieSides)));
         }
         this.storedRoll = dice;
-        const tempEval = this.storedRoll.map(die => die.roll());
+        let tempEval = this.storedRoll.map(die => die.roll());
 
-        //TODO: More eval options, this only evaluates xdy and not advantage or keep high
+        if (keepDiceExpression.length > 1) {
+            tempEval = this.keepDice(keepDiceExpression[1], tempEval);
+        }
+        
         this.realValue = tempEval.reduce((x, y) => { return x + y; });
         return this.realValue;
     }

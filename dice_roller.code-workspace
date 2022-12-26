@@ -2,15 +2,6 @@
 	"folders": [
 		{
 			"path": "."
-		},
-		{
-			"path": "../discord-example-app"
-		},
-		{
-			"path": "../emptyts"
-		},
-		{
-			"path": "../pomodoro_timer_py"
 		}
 	],
 	"settings": {}
