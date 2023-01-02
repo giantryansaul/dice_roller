@@ -66,14 +66,10 @@ Output: Result number and dice rolls object
 ## 11-14-2022
 
 * Resuming mocking from before, I had spent some hours trying to figure it out for Typescript class structures and haven't gotten too far. Very confusing documentation for this.
-
 * This documented answer doesn't seem to solve what I'm doing:
 https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-not-exist-on-type
-
 * I re-read through the Jest documentation and tried the SpyOn with "mockImplementation" function and got the results I wanted. [Documentation](https://jestjs.io/docs/es6-class-mocks#mocking-a-specific-method-of-a-class). I can finally start moving forward, this is much easier.
-
 * Each class has a good base of unit tests, can start expanding the other things we want to add to DiceString.
-
 * Expanded supported math operations and added tests for all. Very well tested now!
 
 # 12-24-2022
@@ -86,3 +82,9 @@ https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-
 # 12-25-2022
 
 * Created logic for `KeepDice` which will do keep high and keep low. All tests passing.
+
+# 12-28-2022
+
+* Installed a CI job for running tests on GHA.
+* Branch created for exploding dice, not super important right now though.
+* Next up lets create a good way to get the test server up and running and get a consistent server running that is always-on or at least on something like heroku. Maybe GHA has something simple to run.
