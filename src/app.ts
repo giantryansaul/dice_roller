@@ -37,12 +37,12 @@ app.post('/interactions', async function (req, res) {
 
         if (name === 'roll') {
             
-            console.log(`Dice roll ${JSON.stringify(data)}`);
+            console.log(`Dice roll ${JSON.stringify(req.body)}`);
 
             return res.send({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {
-                    content: `dice roll ${JSON.stringify(data)}`,
+                    content: `dice roll ${JSON.stringify(req.body)}`,
                 }
             });
         }
