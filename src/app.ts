@@ -42,7 +42,7 @@ app.post('/interactions', async function (req, res) {
             return res.send({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {
-                    content: `dice roll ${data.options.dice_string}`
+                    content: `dice roll ${data.options.dice_string} ${JSON.stringify(data)}`,
                 }
             });
         }
