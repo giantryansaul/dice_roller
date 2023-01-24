@@ -1,7 +1,7 @@
 import { InteractionType, InteractionResponseType } from 'discord-interactions';
 import 'dotenv/config';
 import express from 'express';
-import { HasGuildCommands, ROLL_DICE, TEST_COMMAND } from './commands';
+import { HasGuildCommands, InitializeCommands, ROLL_DICE, TEST_COMMAND } from './commands';
 import { VerifyDiscordRequest } from './utils';
 
 const app = express();
@@ -54,8 +54,10 @@ app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 
   // Check if guild commands from commands.js are installed (if not, install them)
-  HasGuildCommands(process.env.APP_ID, process.env.GUILD_ID, [
-    TEST_COMMAND,
-    ROLL_DICE,
-  ]);
+  if (process.env.APP_ID && process.env.GUILD_ID) {
+    InitializeCommands(process.env.APP_ID, process.env.GUILD_ID, [
+        TEST_COMMAND,
+        ROLL_DICE,
+    ]);
+  }
 });

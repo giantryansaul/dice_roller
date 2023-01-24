@@ -1,44 +1,66 @@
 import { DiscordRequest } from "./utils";
 
+type CommandOption = {
+  name: string;
+  description: string;
+  type: number;
+  required?: boolean;
+  choices?: { name: string; value: string }[];
+};
 
-export async function HasGuildCommands(appId: string | undefined, guildId: string | undefined, commands: any[]) {
-    if (guildId === '' || appId === '') return;
-    for (const c of commands) {
-      await HasGuildCommand(appId, guildId, c);
+type Command = {
+  name: string;
+  description: string;
+  options?: CommandOption[];
+  id?: string;
+}
+
+let installedCommands: Command[] = [];
+
+
+export async function InitializeCommands(appId: string, guildId: string, commands: Command[]): Promise<void> {  
+  console.log(`Initializing commands for ${appId} and ${guildId}...`);
+  installedCommands = await GetInstalledCommands(appId, guildId);
+  for (const command of commands) {
+    const installedCommand = installedCommands.find((ic) => ic.name === command.name);
+    if (!installedCommand) {
+      await InstallGuildCommand(appId, guildId, command);
+    } else if (installedCommand.id) {
+      console.log(`"${command.name}" command already installed with id ${installedCommand.id}`);
+      await UpdateGuildCommand(appId, guildId, command, installedCommand.id);
     }
   }
+}
 
-// Checks for a command
-async function HasGuildCommand(appId, guildId, command) {
-  // API endpoint to get and post guild commands
+async function GetInstalledCommands(appId, guildId) {
   const endpoint = `applications/${appId}/guilds/${guildId}/commands`;
-
   try {
     const res = await DiscordRequest(endpoint, { method: 'GET' });
     const data = await res.json();
-
-    if (data && Array.isArray(data)) {
-      const installedNames = data.map((c) => c.name);
-      // This is just matching on the name, so it's not good for updates
-      if (!installedNames.includes(command.name)) {
-        console.log(`Installing "${command.name}"`);
-        InstallGuildCommand(appId, guildId, command);
-      } else {
-        console.log(`"${command.name}" command already installed`);
-      }
-    }
+    return data;
   } catch (err) {
     console.error(err);
   }
 }
 
 // Installs a command
-export async function InstallGuildCommand(appId, guildId, command) {
+export async function InstallGuildCommand(appId: string, guildId: string, command: Command): Promise<void> {
   // API endpoint to get and post guild commands
   const endpoint = `applications/${appId}/guilds/${guildId}/commands`;
   // install command
   try {
     await DiscordRequest(endpoint, { method: 'POST', body: command });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function UpdateGuildCommand(appId: string, guildId: string, command: Command, commandId: string): Promise<void> {
+  // API endpoint to get and post guild commands
+  const endpoint = `applications/${appId}/guilds/${guildId}/commands/${commandId}`;
+  // install command
+  try {
+    await DiscordRequest(endpoint, { method: 'PATCH', body: command });
   } catch (err) {
     console.error(err);
   }
