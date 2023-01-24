@@ -3,6 +3,7 @@ import 'dotenv/config';
 import express from 'express';
 import { HasGuildCommands, InitializeCommands, ROLL_DICE, TEST_COMMAND } from './commands';
 import { VerifyDiscordRequest } from './utils';
+import { DiceString } from './DiceString';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,13 +37,17 @@ app.post('/interactions', async function (req, res) {
         }
 
         if (name === 'roll') {
-            
-            console.log(`Dice roll ${JSON.stringify(req.body)}`);
+            const diceRollString = data.options.find((op) => op.name === "message").value;
+
+            console.log(`Dice roll ${diceRollString}`);
+
+            const dice = new DiceString(diceRollString);
+            dice.rollString();
 
             return res.send({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {
-                    content: `dice roll ${JSON.stringify(req.body)}`,
+                    content: `dice roll ${diceRollString} => ${dice.result}`,
                 }
             });
         }

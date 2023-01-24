@@ -45,10 +45,9 @@ async function GetInstalledCommands(appId, guildId) {
 
 // Installs a command
 export async function InstallGuildCommand(appId: string, guildId: string, command: Command): Promise<void> {
-  // API endpoint to get and post guild commands
   const endpoint = `applications/${appId}/guilds/${guildId}/commands`;
-  // install command
   try {
+    console.log(`Installing command ${command.name}`);
     await DiscordRequest(endpoint, { method: 'POST', body: command });
   } catch (err) {
     console.error(err);
@@ -56,10 +55,9 @@ export async function InstallGuildCommand(appId: string, guildId: string, comman
 }
 
 export async function UpdateGuildCommand(appId: string, guildId: string, command: Command, commandId: string): Promise<void> {
-  // API endpoint to get and post guild commands
   const endpoint = `applications/${appId}/guilds/${guildId}/commands/${commandId}`;
-  // install command
   try {
+    console.log(`Updating command ${command.name} with id ${commandId}`);
     await DiscordRequest(endpoint, { method: 'PATCH', body: command });
   } catch (err) {
     console.error(err);

@@ -8,15 +8,19 @@ export class DiceString {
     input: string;
     splitInput: string[] = [];
     diceRollObjs: Array<string|DiceGroup> = [];
-    evalString: string[] = [];
+    evalString: string;
+    result: number;
 
     constructor(input: string) {
         this.input = input;
+        this.evalString = '';
+        this.result = 0;
     }
 
-    eval() {
+    rollString(): number {
         this.splitInputByRegex();
-        this.evalSplitInput();
+        this.result = this.evalSplitInput();
+        return this.result;
     }
 
     splitInputByRegex(): string[] {
@@ -55,7 +59,7 @@ export class DiceString {
             }
         });
 
-        const evalString = this.diceRollObjs.map(x => {
+        this.evalString = this.diceRollObjs.map(x => {
                 if (x instanceof DiceGroup) {
                     return x.returnRealValue();
                 } else {
@@ -63,7 +67,7 @@ export class DiceString {
                 }
             }).join('');
 
-        return eval(evalString);
+        return eval(this.evalString);
     }
 }
 
