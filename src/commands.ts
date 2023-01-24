@@ -57,10 +57,16 @@ export const ROLL_DICE = {
   type: 1,
   options: [
     {
-      name: 'dice_string',
+      name: 'message',
       description: 'The dice to roll',
       required: true,
       type: 3,
+    },
+    {
+      name: 'num',
+      description: 'The number of dice to roll',
+      required: false,
+      type: 10,
     }
   ]
 };
