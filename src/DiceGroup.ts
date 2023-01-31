@@ -47,4 +47,12 @@ export class DiceGroup {
     returnRealValue(): number {
         return this.realValue;
     }
+
+    returnDiceRollsAsString(): string {
+        let returnString = '';
+        this.storedRoll.forEach(die => {
+            returnString += `${die.result}(d${die.sides})`;
+        });
+        return returnString;
+    }
 }

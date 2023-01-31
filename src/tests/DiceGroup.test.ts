@@ -7,6 +7,20 @@ const mockDieRoll = jest.mocked(DieRoll);
 const mockRoll = jest.spyOn(DieRoll.prototype, 'roll').mockImplementation(() => 6);
 
 describe('DiceGroup', () => {
+    describe('returnDiceRollsAsString', () => {
+        beforeEach(() => {
+            mockDieRoll.mockClear();
+            mockRoll.mockClear();
+        });
+
+        test('should return a string with the dice rolls', () => {
+            const diceGroup = new DiceGroup('1d6');
+            diceGroup.evalDiceInput();
+            diceGroup.storedRoll = [{result: 6, sides: 6} as DieRoll];
+            expect(diceGroup.returnDiceRollsAsString()).toBe('6(d6)');
+        });
+    });
+
     describe('evalDiceInput', () => {
         beforeEach(() => {
             mockDieRoll.mockClear();

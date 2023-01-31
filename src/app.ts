@@ -42,7 +42,7 @@ app.post('/interactions', async function (req, res) {
             console.log(`Dice roll ${diceRollString}`);
 
             const dice = new DiceString(diceRollString);
-            dice.rollString();
+            dice.rollTheString();
 
             return res.send({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,

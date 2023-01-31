@@ -6,9 +6,25 @@ const mockDiceGroup = jest.spyOn(DiceGroup.prototype, 'evalDiceInput').mockImple
 const mockReturnValue = jest.spyOn(DiceGroup.prototype, 'returnRealValue').mockImplementation(() => 6);
 
 describe('DiceString', () => {
+    describe('rollTheString', () => {
+        test('should return a number', () => {
+            const diceString = new DiceString('d6');
+            expect(diceString.rollTheString()).toBe(6);
+        });
+    });
+
+    describe('createFullRollString', () => {
+        test('should return a string with full result for 1d6', () => {
+            const diceString = new DiceString('1d6');
+            diceString.rollTheString();
+            expect(mockDiceGroup).toHaveBeenCalledTimes(2);
+            expect(JSON.stringify(diceString.diceRollObjs)).toBe('');
+            expect(diceString.fullRollString).toBe('6(d6)');
+        });
+    });
+
     describe('splitInputByRegex', () => {
 
-        //TODO: keep high, low
         //TODO: explode
 
         test('throws error when input is blank string', () => {

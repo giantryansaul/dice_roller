@@ -10,17 +10,31 @@ export class DiceString {
     diceRollObjs: Array<string|DiceGroup> = [];
     evalString: string;
     result: number;
+    fullRollString: string;
 
     constructor(input: string) {
         this.input = input;
         this.evalString = '';
         this.result = 0;
+        this.fullRollString = '';
     }
 
-    rollString(): number {
+    rollTheString(): number {
         this.splitInputByRegex();
         this.result = this.evalSplitInput();
+        this.createFullRollString();
         return this.result;
+    }
+
+    createFullRollString(): string {
+        this.fullRollString = this.diceRollObjs.map(x => {
+            if (x instanceof DiceGroup) {
+                return x.returnDiceRollsAsString();
+            } else {
+                return x;
+            }
+        }).join('+');
+        return this.fullRollString;
     }
 
     splitInputByRegex(): string[] {
