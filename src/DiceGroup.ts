@@ -10,6 +10,9 @@ export class DiceGroup {
     }
 
     private keepDice(keepDiceExpression: string, dice: number[]): number[] {
+
+         //TODO: Note which dice were dropped in this object
+
         const keepHighDice = keepDiceExpression.split("h");
         const keepLowDice = keepDiceExpression.split("l");
         if (keepHighDice.length > 1) {
@@ -27,7 +30,7 @@ export class DiceGroup {
     evalDiceInput(): number {
         const keepDiceExpression = this.input.split("k");
         const diceExpression = keepDiceExpression[0].split("d");
-        const diceMultiple = diceExpression[0] !== '' ? diceExpression[0] : 1;
+        const diceMultiple = diceExpression[0] !== '' ? Number(diceExpression[0]) : 1;
         const dieSides = diceExpression[1];
         const dice: DieRoll[] = [];
         for (let i = 0; i < diceMultiple; i++) {
@@ -49,10 +52,8 @@ export class DiceGroup {
     }
 
     returnDiceRollsAsString(): string {
-        let returnString = '';
-        this.storedRoll.forEach(die => {
-            returnString += `${die.result}(d${die.sides})`;
-        });
-        return returnString;
+        return this.storedRoll.map(die => {
+            return `${die.result}(d${die.sides})`;
+        }).join(' ');
     }
 }

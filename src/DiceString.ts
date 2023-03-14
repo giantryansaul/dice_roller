@@ -27,13 +27,14 @@ export class DiceString {
     }
 
     createFullRollString(): string {
-        this.fullRollString = this.diceRollObjs.map(x => {
+        const mapped = this.diceRollObjs.map(x => {
             if (x instanceof DiceGroup) {
                 return x.returnDiceRollsAsString();
             } else {
                 return x;
             }
-        }).join('+');
+        });
+        this.fullRollString = mapped.join(' + ');
         return this.fullRollString;
     }
 
