@@ -34,7 +34,7 @@ export class DiceString {
                 return x;
             }
         });
-        this.fullRollString = mapped.join(' + ');
+        this.fullRollString = mapped.join(' ');
         return this.fullRollString;
     }
 

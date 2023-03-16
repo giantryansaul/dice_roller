@@ -17,14 +17,14 @@ describe('DiceGroup', () => {
             const diceGroup = new DiceGroup('1d6');
             diceGroup.evalDiceInput();
             diceGroup.storedRoll = [{result: 6, sides: 6} as DieRoll];
-            expect(diceGroup.returnDiceRollsAsString()).toBe('6(d6)');
+            expect(diceGroup.returnDiceRollsAsString()).toBe('1d6[6]');
         });
 
         test('should return a string with multiple dice rolls', () => {
             const diceGroup = new DiceGroup('2d6');
             diceGroup.evalDiceInput();
-            diceGroup.storedRoll = [{result: 6, sides: 6} as DieRoll, {result: 6, sides: 6} as DieRoll];
-            expect(diceGroup.returnDiceRollsAsString()).toBe('6(d6) 6(d6)');
+            diceGroup.storedRoll = [{result: 6, sides: 6} as DieRoll, {result: 5, sides: 6} as DieRoll];
+            expect(diceGroup.returnDiceRollsAsString()).toBe('2d6[6, 5]');
         });
 
         test.skip('[Need to track dropped dice] should return a string with multiple dice rolls', () => {

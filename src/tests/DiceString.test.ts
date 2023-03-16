@@ -5,14 +5,14 @@ import { DieRoll } from '../DieRoll';
 
 const mockDiceGroup = jest.spyOn(DiceGroup.prototype, 'evalDiceInput').mockImplementation(() => 6);
 const mockReturnValue = jest.spyOn(DiceGroup.prototype, 'returnRealValue').mockImplementation(() => 6);
-const mockReturnDiceRollsAsString = jest.spyOn(DiceGroup.prototype, 'returnDiceRollsAsString').mockImplementation(() => '6(d6)');
+const mockReturnDiceRollsAsString = jest.spyOn(DiceGroup.prototype, 'returnDiceRollsAsString').mockImplementation(() => 'd6[6]');
 
 describe('DiceString', () => {
     describe('rollTheString', () => {
         test('should return a number', () => {
             const diceString = new DiceString('d6');
             expect(diceString.rollTheString()).toBe(6);
-            expect(diceString.fullRollString).toBe('6(d6)');
+            expect(diceString.fullRollString).toBe('d6[6]');
         });
     });
 
@@ -21,17 +21,36 @@ describe('DiceString', () => {
             const diceString = new DiceString('1d6');
             diceString.diceRollObjs = [new DiceGroup('1d6')];
             diceString.createFullRollString();
-            expect(diceString.fullRollString).toBe('6(d6)');
+            expect(diceString.fullRollString).toBe('d6[6]');
         });
 
-        test('should return a string with full result for 1d6', () => {
+        test('should return a string with full result for 1d6 + 1d4', () => {
             const mockReturnDiceRollsAsString = jest.spyOn(DiceGroup.prototype, 'returnDiceRollsAsString')
-                .mockReturnValueOnce('6(d6)')
-                .mockReturnValueOnce('4(d4)');
+                .mockReturnValueOnce('d4[4]')
+                .mockReturnValueOnce('d6[6]');
             const diceString = new DiceString('1d6 + 1d4');
-            diceString.diceRollObjs = [new DiceGroup('1d6'), new DiceGroup('1d4')];
+            diceString.diceRollObjs = [new DiceGroup('1d6'), '+', new DiceGroup('1d4')];
             diceString.createFullRollString();
-            expect(diceString.fullRollString).toBe('4(d4) + 6(d6)');
+            expect(diceString.fullRollString).toBe('d4[4] + d6[6]');
+        });
+
+        test('should return a string with full result for 1d6 + 1d4 + 3', () => {
+            const mockReturnDiceRollsAsString = jest.spyOn(DiceGroup.prototype, 'returnDiceRollsAsString')
+                .mockReturnValueOnce('d4[4]')
+                .mockReturnValueOnce('d6[6]');
+            const diceString = new DiceString('1d6 + 1d4 + 3');
+            diceString.diceRollObjs = [new DiceGroup('1d6'), '+', new DiceGroup('1d4'), '+', '3'];
+            diceString.createFullRollString();
+            expect(diceString.fullRollString).toBe('d4[4] + d6[6] + 3');
+        });
+
+        test('should return a string with full result for 2d6 - 3', () => {
+            const mockReturnDiceRollsAsString = jest.spyOn(DiceGroup.prototype, 'returnDiceRollsAsString')
+                .mockReturnValueOnce('2d6[5, 6]');
+            const diceString = new DiceString('2d6 - 3');
+            diceString.diceRollObjs = [new DiceGroup('2d6'), '-', '3'];
+            diceString.createFullRollString();
+            expect(diceString.fullRollString).toBe('2d6[5, 6] - 3');
         });
     });
 

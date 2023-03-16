@@ -52,8 +52,6 @@ export class DiceGroup {
     }
 
     returnDiceRollsAsString(): string {
-        return this.storedRoll.map(die => {
-            return `${die.result}(d${die.sides})`;
-        }).join(' ');
+        return `${this.input}[${this.storedRoll.map(die => die.result).join(', ')}]`;
     }
 }
