@@ -1,3 +1,44 @@
+
+# Dice Roller Design Notes
+
+## Infrastructure
+
+### React Frontend
+* Components needed:
+    * Dice rolls
+        * Enter string and submit
+        * Log of requests and responses
+    * Save roll template
+        * Enter multiple strings and save
+    * Roll template
+    * Login form
+
+### Dice Service
+* Idempotent docker container.
+* Webhook access for discord bot.
+* Load balancer for accepting incoming requests from Discord.
+
+### Backend statefulness
+* Need to save roll templates with specified names and IDs.
+* User profiles saved with associated roll templates.
+* Previous rolls could be saved as a later stage.
+
+### Deploy infrastructure.
+* Create docker container
+* Create minified React build
+* Terraform deployment of resources to AWS.
+    * Push docker container to ECR
+    * Push template to ECS
+    * Create auto-scale for ECS template
+    * Create load balancer for ECS containers
+    * Create S3 bucket for React
+    * Push react build to bucket
+    * Connect static site to giantryansaul domain
+    * Connect load balancer to giantryansaul domain
+* GHA job to run deployment actions above
+
+# Developer Log
+
 ## 10-18-2022
 
 * Installed example app 
@@ -88,3 +129,24 @@ https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-
 * Installed a CI job for running tests on GHA.
 * Branch created for exploding dice, not super important right now though.
 * Next up lets create a good way to get the test server up and running and get a consistent server running that is always-on or at least on something like heroku. Maybe GHA has something simple to run.
+
+## 03-13-2023
+
+* Working more on the string function
+* I need to track dice that were dropped, they need to be kept as an object.
+* Use the dropped property on DieRoll. 
+* Maybe before getting into dropped die, work on just getting the strings returned properly.
+* Strings should be ready to be returned.
+
+## 03-15-2023
+
+* Adjusted the strings on the ouput of groups
+
+## 04-01-2023
+
+* The app itself with the discord bot is running well so I'd like to expand the scope some more.
+* Going to design some of the infrastructure and deployment and figure out how to expand it going forward.
+* Outlined at the top what I would like to see out of the final project.
+* Should be done mostly in Terraform and AWS since I'm most familiar there.
+
+* For database management, look into Sequelize for node

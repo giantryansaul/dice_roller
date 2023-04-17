@@ -1,17 +1,17 @@
 import { InteractionType, InteractionResponseType } from 'discord-interactions';
 import 'dotenv/config';
 import express from 'express';
-import { HasGuildCommands, InitializeCommands, ROLL_DICE, TEST_COMMAND } from './commands';
+import { InitializeCommands, ROLL_DICE, TEST_COMMAND } from './commands';
 import { VerifyDiscordRequest } from './utils';
 import { DiceString } from './DiceString';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
 app.post('/interactions', async function (req, res) {
 
-    const { type, id, data } = req.body;
+    const { type, data } = req.body;
 
     if (type  === InteractionType.PING) {
         return res.send({ type: InteractionResponseType.PONG });
@@ -52,6 +52,8 @@ app.post('/interactions', async function (req, res) {
             });
         }
     }
+
+    await null;
 
 });
 

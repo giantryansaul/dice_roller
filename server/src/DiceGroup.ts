@@ -42,7 +42,7 @@ export class DiceGroup {
         if (keepDiceExpression.length > 1) {
             tempEval = this.keepDice(keepDiceExpression[1], tempEval);
         }
-
+        
         this.realValue = tempEval.reduce((x, y) => { return x + y; });
         return this.realValue;
     }
