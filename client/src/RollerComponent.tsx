@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+const REST_HOST=process.env.REST_HOST || 'http://localhost:3002';
+
 interface RollResponse {
   id: string;
   fullRollString: string;
@@ -14,7 +16,7 @@ const RollerComponent: React.FC = () => {
   const rollContainerRef = useRef<HTMLDivElement>(null);
 
   const sendMessage = async () => {
-    const response = await fetch('http://localhost:3002/roll', {
+    const response = await fetch(`${REST_HOST}/roll`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
       body: JSON.stringify({ diceRollString: requestString }),
