@@ -40,7 +40,7 @@ const RollerComponent: React.FC = () => {
         {rolls.map(roll => (
           <div key={roll.id}>
             <strong>{roll.request}: </strong>
-            {roll.result}
+            {roll.result} {roll.fullRollString}
           </div>
         ))}
       </div>
