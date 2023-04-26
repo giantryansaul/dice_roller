@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const REST_HOST=process.env.REST_HOST || 'http://localhost:3002';
+const REST_HOST=process.env.REACT_APP_REST_HOST;
 
 interface RollResponse {
   id: string;
