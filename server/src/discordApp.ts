@@ -24,20 +24,9 @@ app.post('/interactions', async function (req, res) {
     if (type === InteractionType.APPLICATION_COMMAND) {
         const { name } = data;
 
-        // "test" guild command
-        if (name === 'test') {
-            console.log(`Test command`);
-            // Send a message into the channel where command was triggered from
-            return res.send({
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-                data: {
-                    content: 'hello world',
-                },
-            });
-        }
-
         if (name === 'roll') {
             const diceRollString = data.options.find((op) => op.name === "message").value;
+            const user = data.member.user.username;
 
             console.log(`Dice roll ${diceRollString}`);
 
@@ -47,7 +36,7 @@ app.post('/interactions', async function (req, res) {
             return res.send({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {
-                    content: `Request \`${diceRollString}\` => \`${dice.result}\`\n\`${dice.fullRollString}\``,
+                    content: `${user} Request: \`${diceRollString}\`\nRoll: \`${dice.fullRollString}\`\nResult: \`${dice.result}\`\n`,
                 }
             });
         }

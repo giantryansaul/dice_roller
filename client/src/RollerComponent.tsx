@@ -39,8 +39,7 @@ const RollerComponent: React.FC = () => {
       <div className="rolls-container" ref={rollContainerRef} >
         {rolls.map(roll => (
           <div key={roll.id}>
-            <strong>{roll.request}: </strong>
-            {roll.result} {roll.fullRollString}
+            <strong>{roll.result}: </strong> {roll.fullRollString}
           </div>
         ))}
       </div>

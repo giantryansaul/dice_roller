@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <div className="header">
-        <h1>Roller</h1>
+        <h1>Rolling App</h1>
       </div>
       <RollerComponent />
     </div>
