@@ -1,5 +1,7 @@
 # Dice Roller
 
+![test-deploy workflow](https://github.com/giantryansaul/dice_roller/actions/workflows/test-deploy.yml/badge.svg)
+
 A Discord bot and React app for rolling dice.
 
 ## Example Apps on Render
