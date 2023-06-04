@@ -14,8 +14,6 @@
   "dependencies": {
     "@types/chai": "^4.3.3",
     "@types/chai-http": "^4.2.0",
-    "@types/react": "^18.0.32",
-    "@types/react-dom": "^18.0.11",
     "chai": "^4.3.6",
     "chai-http": "^4.3.0",
     "cors": "^2.8.5",
@@ -24,8 +22,6 @@
     "express": "^4.18.2",
     "node-fetch": "^2.6.7",
     "random-js": "^2.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "uuid": "^9.0.0",
     "web-vitals": "^2.1.4"
   },

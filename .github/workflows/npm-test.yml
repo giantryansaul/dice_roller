@@ -1,6 +1,6 @@
 # This workflow will run tests using node, it will only setup and test the version of Node on .nvmrc
 
-name: Node.js Package
+name: Unit Tests
 
 on:
   push:
@@ -9,7 +9,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  test-server:
+    name: Server Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -17,5 +18,8 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
+          cache-dependency-path: './server/package-lock.json'
       - run: npm ci
+        working-directory: ./server
       - run: npm test
+        working-directory: ./server
