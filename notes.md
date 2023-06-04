@@ -36,7 +36,7 @@
 
 * [x] Deployed through Render.
 * [x] Auto-deploy on push to main.
-* [ ] GHA job to gate deployment when tests fail.
+* [x] GHA job to gate deployment when tests fail.
 
 ## Developer Log
 
@@ -160,3 +160,4 @@ https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-
 * Updated design notes at the top.
 * The Render site is free tier, so I should create a status indicator for when the site is ready to accept requests.
 * A "wake-up call" endpoint would be good for this.
+* Added a GHA step for deployment so that I'm not deploying from Render directly.

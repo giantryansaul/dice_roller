@@ -8,6 +8,9 @@ A Discord bot and React app for rolling dice.
 
 * [React App](https://dice-roller-client.onrender.com/)
 
+## Development Notes
+[Development Notes](./notes.md) updated as I work on this project.
+
 ## Setup
 
 ### React App
